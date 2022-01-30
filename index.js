@@ -1,21 +1,31 @@
-const disc = require("discord.js")
-const client = new disc.Client({intents: 32767})
-const token= process.env.token
-const config = require("./config.json")
-client.login(token)
-client.on("ready", () => {
-  console.log(`Iniciei na brisa ${client.user.username}\n Com: ${client.users.cache.size} users`)
+const Discord = require("discord.js"); 
+const client = new Discord.Client({intents: 32767});
+const config = require("./config.json");
+const prefix ="Your_Prefix";//Prefix do seu bot 
 
+client.login("Your_Token"); //Token do seu bot
 
-  let canal = client.channels.cache.get(config.canal_ini)
-  canal.send({content: "Pega a tampa ae viado!!"})
+client.once('ready', async () => {
+
+    console.log("✅ - Estou online!")
 
 })
-const express = require('express')
-const app = express()
 
-app.get('/', function (req, res) {
-  res.send('Famoso Lança Lançando')
-})
+client.on('messageCreate', message => {
+     if (message.author.bot) return;
+     if (message.channel.type == 'dm') return;
+     if (!message.content.toLowerCase().startsWith(config.prefix.toLowerCase())) return;
+     if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return;
 
-app.listen(3000)
+    const args = message.content
+        .trim().slice(config.prefix.length)
+        .split(/ +/g);
+    const command = args.shift().toLowerCase();
+
+    try {
+        const commandFile = require(`./commands/${command}.js`)
+        commandFile.run(client, message, args);
+    } catch (err) {
+    console.error('Erro:' + err);
+  }
+}); 
