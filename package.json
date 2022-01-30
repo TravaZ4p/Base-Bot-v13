@@ -1,20 +1,20 @@
 {
-  "name": "Gatinha-1",
+  "name": "Bot-v13",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^13.3.1",
+    "discord.js": "^13.3.0",
     "express": "^4.17.2"
   },
   "devDependencies": {
-    "node": "^16.13.0"
+    "node": "^16.13.2"
   }
 }
+
