@@ -1,31 +1,37 @@
-const Discord = require("discord.js"); 
+const Discord = require("discord.js");
+const { Client, Collection } = require('discord.js');
 const client = new Discord.Client({intents: 32767});
 const config = require("./config.json");
-const prefix ="Your_Prefix";//Prefix do seu bot 
-
-client.login("Your_Token"); //Token do seu bot
-
-client.once('ready', async () => {
-
-    console.log("✅ - Estou online!")
-
+const { TOKEN, PREFIX} = require("./config.json");
+const fs = require('fs')
+const express = require('express')
+const app = express()
+app.get('/', function (req, res) {
+  res.send('Hello World')
 })
+app.listen(3000)
 
-client.on('messageCreate', message => {
-     if (message.author.bot) return;
-     if (message.channel.type == 'dm') return;
-     if (!message.content.toLowerCase().startsWith(config.prefix.toLowerCase())) return;
-     if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return;
+client.commands = new Collection();
+client.aliases = new Collection();
+client.categories = fs.readdirSync("./Commands");
+client.events = new Collection();
+client.slashCommands = new Collection();
+client.config = require('./config.json')
 
-    const args = message.content
-        .trim().slice(config.prefix.length)
-        .split(/ +/g);
-    const command = args.shift().toLowerCase();
+module.exports = client;
 
-    try {
-        const commandFile = require(`./commands/${command}.js`)
-        commandFile.run(client, message, args);
-    } catch (err) {
-    console.error('Erro:' + err);
-  }
-}); 
+
+["Command", "Event", "Slash","antiCrash"].forEach(handler => {
+  require(`./Structures/${handler}`)(client);
+});
+client.once('ready', async () => {
+    console.log("✅ - Logado em "+client.user.username+" com sucesso!")
+    let a1 = ["Digite ny!help",
+     "Tava eu e o meu bonde, apavorando na festa ",
+    "Aee Tô vivo",
+    "Humildade Sempre"],
+    i = 0;
+    setInterval(() => client.user.setActivity(`${a1[i++ % a1.length]}`,{
+    type:"PLAYING"}
+    ), 5000)
+})
