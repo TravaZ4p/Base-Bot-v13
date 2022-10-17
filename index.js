@@ -7,7 +7,7 @@ const fs = require('fs')
 const express = require('express')
 const app = express()
 app.get('/', function (req, res) {
-  res.send('Hello World')
+  
 })
 app.listen(3000)
 
@@ -25,13 +25,14 @@ module.exports = client;
   require(`./Structures/${handler}`)(client);
 });
 client.once('ready', async () => {
-    console.log("✅ - Logado em "+client.user.username+" com sucesso!")
-    let a1 = ["Digite ny!help",
-     "Tava eu e o meu bonde, apavorando na festa ",
-    "Aee Tô vivo",
-    "Humildade Sempre"],
+    console.log("✅ - Logado em "+client.user.username+" com sucesso!")//Verificação em Painel
+    let a1 = ["Digite ny!help",//Status
+     "Tava eu e o meu bonde, apavorando na festa ",//Status
+    "Servidor +Humildade e Divertido",//Status
+    ""],//Status
     i = 0;
     setInterval(() => client.user.setActivity(`${a1[i++ % a1.length]}`,{
-    type:"PLAYING"}
-    ), 5000)
-})
+    type:"STREAMING"}//PLAYING - COMPETTING - LISTENING
+    ), 50
+
+client.login(process.env.TOKEN);
